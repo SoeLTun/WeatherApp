@@ -2,12 +2,18 @@
 var main = angular.module('main', ['ngRoute', 'ngResource']);
 
 // create controllers for the app
-main.controller('mainMenuController', ['$scope', mainMenuController]);
-main.controller('forecastController', ['$scope', forecastController]);
+main.controller('mainMenuController', ['$scope', 'cityService', mainMenuController]);
+main.controller('forecastController', ['$scope', 'cityService', forecastController]);
 
 // create routes for the app
-main.config(function($routeProvider, $locationProvider) {
-    // $locationProvider.html5Mode(true);
+main.config(['$routeProvider', Routes]);
+
+// create city service for the app 
+
+main.service('cityService', cityService)
+
+// setup the routes for the app
+function Routes($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'pages/mainmenu.html',
@@ -17,14 +23,26 @@ main.config(function($routeProvider, $locationProvider) {
             templateUrl: 'pages/forecast.html',
             controller: 'forecastController'
         })
-});
-
-// mainmenu Controller
-function mainMenuController($scope) {
 
 }
 
+// city service 
+
+function cityService() {
+    this.city = "San Jose, CA";
+}
+
+
+// mainmenu Controller
+function mainMenuController($scope, cityService) {
+    $scope.city = cityService.city;
+    $scope.$watch('city', function() {
+        cityService.city = $scope.city;
+    });
+}
+
 // forecast Controller
-function forecastController($scope) {
+function forecastController($scope, cityService) {
+    $scope.city = cityService.city;
 
 }
