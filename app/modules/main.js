@@ -6,14 +6,15 @@ main.controller('mainMenuController', ['$scope', 'cityService', mainMenuControll
 main.controller('forecastController', ['$scope', 'cityService', forecastController]);
 
 // create routes for the app
-main.config(['$routeProvider', Routes]);
+main.config(['$routeProvider', '$locationProvider', Routes]);
 
 // create city service for the app 
 
 main.service('cityService', cityService)
 
 // setup the routes for the app
-function Routes($routeProvider) {
+function Routes($routeProvider, $locationProvider) {
+    $locationProvider.hashPrefix('');
     $routeProvider
         .when('/', {
             templateUrl: 'pages/mainmenu.html',
